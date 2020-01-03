@@ -4,8 +4,7 @@ const CreateMD = require("./CreateMD");
 const createMD = new CreateMD();
 
 // require('./markdown/IO')
-const IO = require('./markdown/IOSync')
-
+const IO = require("./markdown/IOSync");
 
 const params = process.argv.slice(2);
 
@@ -20,30 +19,37 @@ const cwd = process.cwd();
 const backslashIndex = cwd.lastIndexOf("\\");
 const dirname = cwd.slice(backslashIndex + 1);
 
-
-
-function start(){
+function start() {
     const params = process.argv.slice(2);
-    const io = new IO()
-    let paramsObj = {}
-    params.forEach((item,i)=>{
-        if(item.includes('=')){
-            item= item.split('-')[1].split('=')
-            item[1]=='true' && (item[1]=true)
-            item[1]=='false' && (item[1]=false)
-            paramsObj[item[0]]=item[1]     
-        }else {
-            
-            item= item.split('-')[1]
-            paramsObj[item[0]]=true
+    const io = new IO();
+    let paramsObj = {};
+    params.forEach((item, i) => {
+        if (item.includes("=")) {
+            item = item.split("-")[1].split("=");
+            item[1] == "true" && (item[1] = true);
+            item[1] == "false" && (item[1] = false);
+            paramsObj[item[0]] = item[1];
+        } else {
+            item = item.split("-")[1];
+            paramsObj[item[0]] = true;
         }
-    })
+    });
 
-    if(paramsObj.md){
-        io.createMarkdownByCurrentDirectoryFileName(paramsObj.md)
+    if (paramsObj.md) {
+        io.createMarkdownByCurrentDirectoryFileName(paramsObj.md);
     }
-    paramsObj.amd && io.amkmd(dirname,paramsObj.amd)
+    paramsObj.amd && io.amkmd(dirname, paramsObj.amd);
+
+    if (paramsObj.chnm) {
+        const changeFileName = require("./mdToAnki/changeFileName");
+        changeFileName(
+            paramsObj.chnm.split("/")[0],
+            paramsObj.chnm.split("/")[1],
+            paramsObj.chnm.split("/")[2],
+            paramsObj.chnm.split("/")[3],
+        );
+    }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
 }
 
-start()
+start();
