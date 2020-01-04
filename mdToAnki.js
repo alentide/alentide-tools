@@ -406,11 +406,12 @@ function main() {
                 ankiArrayContent.push(cardString);
             });
             let result = ankiArrayContent.join("\n");
-            fs.writeFile(mdName + ".txt", result, "utf8", err => {
+            mkdirsSync('./txtforanki')
+            fs.writeFile('txtforanki/'+mdName + ".txt", result, "utf8", err => {
                 err && console.log("写入失败");
             });
             if (result) {
-                fs.appendFile("allanki.txt", "\n" + result, "utf8", err => {
+                fs.appendFile("txtforanki/allanki.txt", "\n" + result, "utf8", err => {
                     err && console.log("写入失败");
                 });
             }
