@@ -8,10 +8,10 @@ const IO = require("./markdown/IOSync");
 
 const params = process.argv.slice(2);
 
-const haveDayNote = params.find(
-    item => item.includes("--daynote") || item.includes("-dn")
-);
-haveDayNote && createMD.createDayNote();
+// const haveDayNote = params.find(
+//     item => item.includes("--daynote") || item.includes("-dn")
+// );
+// haveDayNote && createMD.createDayNote();
 
 const io = new IO();
 
@@ -31,7 +31,8 @@ function start() {
             paramsObj[item[0]] = item[1];
         } else {
             item = item.split("-")[1];
-            paramsObj[item[0]] = true;
+            // params[i] = item.slice(1)
+            paramsObj[item] = true;
         }
     });
 
@@ -48,6 +49,9 @@ function start() {
             paramsObj.chnm.split("/")[2],
             paramsObj.chnm.split("/")[3],
         );
+    }
+    if(paramsObj.dn){
+        createMD.makeMdDirAndFile()
     }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
 }
