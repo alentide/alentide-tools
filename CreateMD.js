@@ -104,7 +104,8 @@ class CreateMD {
         const template = [];
 
         //一些video卡片，可能问题是空的，如果是空的可能被忽略掉，所以加点描述
-        const description = (qVideo||aVideo) ? contentDescription:''
+        // const description = (qVideo||aVideo) ? contentDescription:''
+        const description = ''
 
         for (var i = 0; i < len; i++) {
             template.push(

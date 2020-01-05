@@ -240,7 +240,13 @@ function main() {
 
             arrayData.forEach((item, i) => {
                 if (item.indexOf("Q:") == 0) {
-                    inputInAnki = true;
+                    //中文冒号分割
+                    if(item.split('Q:')[1].split('：')[1]){
+                        inputInAnki = true;
+                    }else {
+                        inputInAnki = false;
+                        return
+                    }
                     inputInAnswer = false;
                     ankiArrayData.push({
                         id: i,
@@ -249,7 +255,14 @@ function main() {
                     });
                     contentLocation = "question";
                 } else if (item.indexOf("A:") == 0) {
-                    inputInAnswer = true;
+                    // //中文冒号分割
+                    // if(item.split('A:')[1]){
+                    //     inputInAnswer = true;
+                    // }else {
+                    //     inputInAnswer = false;
+                    //     return
+                    // }
+                    if(!inputInAnki)return
                     lanLearn = false;
                     // let card = ankiArrayData.find(aItem=>{
                     //     return aItem.id==i-1
@@ -260,11 +273,13 @@ function main() {
                     ] = Array.of(getNewLine(item.split("A:")[1]));
                     // card && (card.answer=Array.of(getNewLine(item.split('A:')[1])))
                 } else if (item.indexOf("T:") == 0) {
+                    if(!inputInAnki)return
                     ankiArrayData[ankiArrayData.length - 1].tag =
                         item.split("T:")[1] + prefix;
                 } else if (item.indexOf("N:") == 0) {
                     inputInAnki = false;
                 } else if (item.indexOf("TI:") == 0) {
+                    if(!inputInAnki)return
                     chunkId++;
                     let thisCardVideoPath;
                     if (item.split("TI:")[1].split("-")[2]) {
@@ -301,6 +316,7 @@ function main() {
                         contentLocation
                     ].push(content);
                 } else if (item.startsWith("F:")) {
+                    if(!inputInAnki)return
                     ankiArrayData[ankiArrayData.length - 1].lanLearn = true;
                     contentLocation = "foreign";
                     content = getNewLine(item.split("F:")[1]);
@@ -317,6 +333,7 @@ function main() {
                         contentLocation
                     ].push(content);
                 } else if (item.startsWith("C:")) {
+                    if(!inputInAnki)return
                     contentLocation = "chinese";
                     content = getNewLine(item.split("C:")[1]);
                     if (
@@ -332,6 +349,7 @@ function main() {
                         contentLocation
                     ].push(content);
                 } else if (item.indexOf("#") !== 0 && inputInAnki) {
+                    if(!inputInAnki)return
                     // if (!inputInAnki) return;
                     let content;
                     if (isImage(item)) {
