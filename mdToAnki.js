@@ -158,6 +158,13 @@ function main() {
         getAnkiContent({ mdName, mdPath: md, imageDir, tag }, i);
     }
 
+    //每次执行mdtoanki的命令，都应该先删除txrforanki下的allanki.txt文件 文件路径txtforanki/allanki.txt
+    const txtForAnkiPath = 'txtforanki/allanki.txt'
+    if(fs.existsSync(txtForAnkiPath)){
+        fs.unlinkSync('txtforanki/allanki.txt')
+    }
+    
+
     let asyncDone;
     fs.readdir("./", (err, data) => {
         if (mdfilename) {
@@ -166,6 +173,7 @@ function main() {
             let mdset = data.filter(item => {
                 return item.indexOf(".md") > -1;
             });
+
 
             let mdLen = mdset.length;
             asyncDone = new Array(mdLen).fill(false);
@@ -407,9 +415,11 @@ function main() {
             });
             let result = ankiArrayContent.join("\n");
             mkdirsSync('./txtforanki')
-            fs.writeFile('txtforanki/'+mdName + ".txt", result, "utf8", err => {
-                err && console.log("写入失败");
-            });
+            if(result){
+                fs.writeFile('txtforanki/'+mdName + ".txt", result, "utf8", err => {
+                    err && console.log("写入失败");
+                });
+            }
             if (result) {
                 fs.appendFile("txtforanki/allanki.txt", "\n" + result, "utf8", err => {
                     err && console.log("写入失败");
