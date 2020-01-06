@@ -47,7 +47,8 @@ class CreateMD {
             "EnglishTVPlayListening",
             "EnglishTVPlaySpeaking",
             "EnglishPhrases",
-            "Git"
+            "Git",
+            "EnglishWords"
         ];
         this.rule = {
             EnglishTVPlayListening: {
@@ -59,9 +60,13 @@ class CreateMD {
                 contentDescription: "根据中文，说英语并与视频比对，且要模仿口音"
             },
             EnglishPhrases: {
-                twoCard: true,
+                // twoCard: true,
                 contentDescription:
-                    "第一张卡片：根据汉语说英语，第二张：根据英语说汉语"
+                    "根据汉语说英语"
+                    // "第一张卡片：根据汉语说英语，第二张：根据英语说汉语"
+            },
+            EnglishWords:{
+                contentDescription:'根据英文单词说出一个意思'
             },
             Git:{
                 contentDescription: '一般与git相关的知识'
@@ -95,7 +100,7 @@ class CreateMD {
      */
     getMDTemplate({
         category,
-        len = 50,
+        len,
         qVideo,
         aVideo,
         contentDescription,
@@ -135,7 +140,7 @@ class CreateMD {
         // const qVideo = rule[category] && rule[category].qVideo;
         // const aVideo = rule[category] && rule[category].aVideo;
         // const contentDescription = rule[category] && rule[category].contentDescription;
-        const {qVideo,aVideo,contentDescription,twoCard} = rule[category] && rule[category]
+        const {qVideo,aVideo,contentDescription,twoCard} = rule[category] ? rule[category] :{}
         return this.getMDTemplate({
             category,
             len,

@@ -218,8 +218,9 @@ function main() {
                 const tagOption = [
                     { tag: "V:", default: "" },
                     { tag: "P:", default: "" },
-                    { tag: "U:", default: "按钮开" },
+                    { tag: "U:", default: 'fractium' },
                     { tag: "B:", default: 10 },
+                    { tag: "CL:", default: '' },
                 ];
                 if (arrayData.find(item => item.startsWith(tag))) {
                     return arrayData
@@ -233,6 +234,7 @@ function main() {
             const videoPath = setMeta("V:");
             const prefix = setMeta("P:");
             user = setMeta("U:");
+            const className = setMeta("CL:");
             const bitrate = parseInt(setMeta("B:"))
 
             getChunk();
@@ -299,7 +301,8 @@ function main() {
                         chunkId,
                         prefix,
                         user,
-                        bitrate
+                        bitrate,
+                        className
                     );
                     asyncQueue.push(splitVideo);
                     let content = getNewLine(html);

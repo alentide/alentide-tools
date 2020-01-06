@@ -35,7 +35,8 @@ function videoHandle(
     chunkId = 1,
     prefix = "",
     user = "test",
-    bitrate
+    bitrate,
+    className
 ) {
     const { duration, start } = getVideoParams(mdTI);
     const splitVideoParams = {
@@ -74,7 +75,7 @@ function videoHandle(
     const videoHTML = {};
 
     //html也是动态生成的
-    videoHTML.html = `<video autoplay="true" loop controls="controls" id="video"  src="${mdVideoPath}" style="width:100%;display:inline-block;"></video>`;
+    videoHTML.html = `<video autoplay="true" loop controls="controls" id="video"  class="${className}" src="${mdVideoPath}" style="width:100%;display:inline-block;"></video>`;
     // videoHTML.html = function(currentChunk){
     //     return `<video autoplay="true" loop controls="controls" id="video"  src="${currentChunk}/${mdVideoPath}" style="width:100%;display:inline-block;"></video>`
     // }

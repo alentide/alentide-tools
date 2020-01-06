@@ -51,7 +51,7 @@ function start() {
         );
     }
     if(paramsObj.dn){
-        createMD.makeMdDirAndFile()
+        createMD.makeMdDirAndFile(500)
     }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
 }

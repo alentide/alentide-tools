@@ -3,3 +3,5 @@
 *.txt
 node_modules/
 server/
+.md
+成果/
