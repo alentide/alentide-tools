@@ -7,7 +7,7 @@ const createMD = new CreateMD();
 const IO = require("./markdown/IOSync");
 
 const params = process.argv.slice(2);
-
+const autoSplitVideo = require('./videoHandle/autoSplitVideo')
 // const haveDayNote = params.find(
 //     item => item.includes("--daynote") || item.includes("-dn")
 // );
@@ -52,6 +52,9 @@ function start() {
     }
     if(paramsObj.dn){
         createMD.makeMdDirAndFile(500)
+    }
+    if(paramsObj.asv){
+        autoSplitVideo(paramsObj.asv.split("/")[0],paramsObj.asv.split("/")[1],paramsObj.asv.split("/")[2],paramsObj.asv.split("/")[3])
     }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
 }

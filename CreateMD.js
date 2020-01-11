@@ -43,13 +43,15 @@ class CreateMD {
         //     "07-express",
         //     "08-koa"
         // ];
-        this.fileName = [
-            "EnglishTVPlayListening",
-            "EnglishTVPlaySpeaking",
-            "EnglishPhrases",
-            "Git",
-            "EnglishWords"
-        ];
+        // this.fileName = [
+        //     "EnglishTVPlayListening",
+        //     "EnglishTVPlaySpeaking",
+        //     "EnglishPhrases",
+        //     "Git",
+        //     "EnglishWords",
+        //     "Electron"
+        // ];
+        this.fileName = JSON.parse(fs.readFileSync('C:/alxsd/utils/db/filename.json').toString())
         this.rule = {
             EnglishTVPlayListening: {
                 qVideo: true,
@@ -85,10 +87,10 @@ class CreateMD {
         this.autoSetFileName();
         this.fileName.forEach(item => {
             this.createMDFile(
-                item,
+                item.name,
                 ".md",
                 "./" + note + "/",
-                this.getMDContent(item, len)
+                this.getMDContent(item.name, len)
             );
         });
     }
@@ -99,7 +101,7 @@ class CreateMD {
      * qVideo指的是问题里有视频
      */
     getMDTemplate({
-        category,
+        fileName,
         len,
         qVideo,
         aVideo,
@@ -107,18 +109,17 @@ class CreateMD {
         twoCard
     }) {
         const template = [];
-
         //一些video卡片，可能问题是空的，如果是空的可能被忽略掉，所以加点描述
         // const description = (qVideo||aVideo) ? contentDescription:''
         const description = ''
 
         for (var i = 0; i < len; i++) {
             template.push(
-                `Q:${category}：${description}\r\n\r\n${
+                `Q:${fileName}：${description}\r\n\r\n${
                     qVideo ? "TI:   -   \r\n\r\n" : ""
-                }A:${twoCard ? category + "：" : ""}\r\n\r\n${
+                }A:${twoCard ? fileName + "：" : ""}\r\n\r\n${
                     aVideo ? "TI:   -   \r\n\r\n" : ""
-                }T:${category}\r\n\r\nN:${i + 1}\r\n\r\n\r\n\r\n`
+                }T:${fileName}\r\n\r\nN:${i + 1}\r\n\r\n\r\n\r\n`
             );
         }
         const BaseTemplate = `V:\r\n\r\nP:\r\n\r\nU:fractium\r\n\r\n`;
@@ -135,14 +136,17 @@ class CreateMD {
      */
     getMDContent(fileName, len) {
         // const category = fileName.split("-")[1].split(".")[0];
-        const category = fileName;
-        const rule = this.rule;
+        // const category = fileName;
+        // const rule = this.rule;
         // const qVideo = rule[category] && rule[category].qVideo;
         // const aVideo = rule[category] && rule[category].aVideo;
         // const contentDescription = rule[category] && rule[category].contentDescription;
-        const {qVideo,aVideo,contentDescription,twoCard} = rule[category] ? rule[category] :{}
+
+        // const {qVideo,aVideo,contentDescription,twoCard} = rule[category] ? rule[category] :{}
+        const rule = this.fileName.find(item=>item.name===fileName)
+        const {qVideo,aVideo,contentDescription,twoCard} = rule?rule:{}
         return this.getMDTemplate({
-            category,
+            fileName,
             len,
             qVideo,
             aVideo,

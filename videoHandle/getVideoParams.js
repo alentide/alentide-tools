@@ -73,9 +73,14 @@ function getVideoParams(input) {
         let startNum = parseInt(startTimeSplitByColon[0])*3600 + parseInt(startTimeSplitByColon[1])*60 + parseInt(startTimeSplitByColon[2])
         let endNum = parseInt(endTimeSplitByColon[0])*3600 + parseInt(endTimeSplitByColon[1])*60 + parseInt(endTimeSplitByColon[2])
         let duration = endNum - startNum
+        if(!paramsArr[1].includes('.')){
+            duration = paramsArr[1]
+        }
+        
 
         params.duration = duration;
         params.start = startTime;
+        // console.log(paramsArr[1].includes('.'))
     }
     // console.log(params)
     return params;

@@ -6,7 +6,7 @@ function splitVideo ({inputPath,outPath,start,duration,bitrate=10},cb){
     !inputPath && (needRun = false)
     !outPath && (needRun = false)
     if(!needRun) {
-        console.log('缺少必要参数')
+        console.log('分割视频缺少必要参数')
         return
     }
     // console.log(inputPath,outPath,start,duration)
