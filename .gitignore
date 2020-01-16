@@ -5,3 +5,5 @@ node_modules/
 server/
 .md
 成果/
+
+mdToAnki/*.md
