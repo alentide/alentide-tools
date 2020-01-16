@@ -62,7 +62,8 @@ function copyFile(src, goal,cb) {
         });
     });
 }
+module.exports = copyFile
 
-copyFile("./a.txt", "./chunk01/d.txt",(goal)=>{
-    console.log(goal)
-});
+// copyFile("./a.txt", "./chunk01/d.txt",(goal)=>{
+//     console.log(goal)
+// });

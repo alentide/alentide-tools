@@ -9,6 +9,8 @@ function main() {
     const mdfilename = getFileName();
     const _ = require("lodash");
 
+    const stepToAnki = require('./mdToAnki/stepToAnki')
+
     async function chunkAsyncFunc(arr) {
         // arr.forEach(async (item,i)=>{
         // 	await item(i)
@@ -241,6 +243,29 @@ function main() {
             let lanLearn = false;
 
             arrayData.forEach((item, i) => {
+                if(item.startsWith('PROBLEM:')){
+                    // 如果开头是PROBLEM，就判断是含有多个步骤的大问题。将之后的多行传递给 。。。函数处理。
+                    
+                    // 判断该问题有多少行
+                    let nextLine = i+1
+
+                    const problem = [item]
+
+                    // 在草稿处停止
+                    while(!arrayData[nextLine].startsWith('DRAFT:')){
+                        arrayData[nextLine].skip=true
+                        problem.push(arrayData[nextLine])
+                        nextLine++
+                    }
+                    stepToAnki(problem,imageDir,user,currentPath).forEach((cardItem,cardItemIndex)=>{
+                        ankiArrayData.push({...cardItem,id:i+cardItemIndex})
+                    })
+                }
+
+                if(item.skip){
+                    return
+                }
+
                 if (item.indexOf("Q:") == 0) {
                     //中文冒号分割
                     if(item.split('Q:')[1].split('：')[1]){
