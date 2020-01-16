@@ -2,7 +2,6 @@ const copyFile = require('./copyFile')
 function copyImage(imageName, imageDir, user = "按钮开",currentPath) {
     let src = imageDir + imageName;
     let ccpath = currentPath.getNew();
-    console.log(ccpath);
     let goal = ccpath + "/anki-paste" + imageName;
     copyFile(src, goal);
 }

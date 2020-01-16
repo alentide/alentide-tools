@@ -257,7 +257,7 @@ function main() {
                         problem.push(arrayData[nextLine])
                         nextLine++
                     }
-                    stepToAnki(problem,imageDir,user,currentPath).forEach((cardItem,cardItemIndex)=>{
+                    stepToAnki(problem,cwd,user,currentPath).forEach((cardItem,cardItemIndex)=>{
                         ankiArrayData.push({...cardItem,id:i+cardItemIndex})
                     })
                 }
@@ -383,6 +383,10 @@ function main() {
                     if (isImage(item)) {
                         content = getAnkiImgaeSrc(item);
                         const imagName = getImageName(item);
+                        //获得图片路径
+                        
+                        const imageDir = cwd + `/md/${item.split('/')[1]}/`
+
                         copyImage(imagName, imageDir, user);
                     } else {
                         content = getNewLine(item);
@@ -505,7 +509,7 @@ function main() {
     function copyImage(imageName, imageDir, user = "按钮开") {
         let src = imageDir + imageName;
         let ccpath = currentPath.getNew();
-        console.log(ccpath);
+        // console.log(ccpath);
         let goal = ccpath + "/anki-paste" + imageName;
         copyFile(src, goal);
     }

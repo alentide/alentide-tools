@@ -39,7 +39,7 @@ const testStr = [
  * 拿到的是一个数组
  * 数组元素是各行字符串
  */
-function stepToAnki(data, imageDir, user,currentPath) {
+function stepToAnki(data, cwd, user,currentPath) {
     const {
         copyImage,
         getAnkiImageSrc,
@@ -73,6 +73,8 @@ function stepToAnki(data, imageDir, user,currentPath) {
             if (isImage(item)) {
                 content = getAnkiImageSrc(item);
                 const imagName = getImageName(item);
+                //获得图片路径
+                const imageDir = cwd + `/md/${item.split('/')[1]}/`
 
                 copyImage(imagName, imageDir, user,currentPath);
             } else {
