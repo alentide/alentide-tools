@@ -6,5 +6,13 @@
     {
         "name": "Imitate",
         "contentDescription":"学习模仿的笔记"
+    },
+    {
+        "name": "ES6",
+        "contentDescription":"学习ES6语法"
+    },
+    {
+        "name": "前端面试题",
+        "contentDescription":"学习前端面试题"
     }
 ]
