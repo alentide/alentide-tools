@@ -61,12 +61,14 @@ function MdToAnki() {
 
     //读文件
     this.fileList.forEach(file => {
-        this.fileContentList.push(
-            fs
-                .readFileSync(this.path + "/" + file)
-                .toString()
-                .split("\r\n\r\n")
-        );
+        const fileStr = fs.readFileSync(this.path + "/" + file).toString();
+        let line
+        if(fileStr.startsWith('\\r\\n')){
+            line = '\r\n'
+        }else {
+            line = '\r\n\r\n'
+        }
+        this.fileContentList.push(fileStr.split(line));
     });
 
     this.fileContentList.forEach(file => {
@@ -113,7 +115,7 @@ function MdToAnki() {
                 fileCard.slice(-1)[0].tag = tag;
             } else if (currentLine.startsWith("TI:")) {
                 //TODO: 视频处理
-                
+
                 //还没有写
 
                 if (!inputLocation) return;
