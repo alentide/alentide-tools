@@ -56,6 +56,11 @@ function start() {
     if(paramsObj.asv){
         autoSplitVideo(paramsObj.asv.split("/")[0],paramsObj.asv.split("/")[1],paramsObj.asv.split("/")[2],paramsObj.asv.split("/")[3])
     }
+    //mdtoanki2
+    if(paramsObj.mta){
+        const MdToAnki = require('./mdToAnki2/main')
+        new MdToAnki()
+    }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
 }
 
