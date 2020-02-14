@@ -35,13 +35,16 @@ const user = "fractium";
 currentPath.getNew = function() {
     return "C:/Users/30716/AppData/Roaming/Anki2/" + user + "/collection.media";
 };
+
+
 let tag = ""; //卡片的标签
+let prefix = ''; //卡片前缀
 
 const { mkdirsSync } = require("../mdToAnki/mkdirs");
 
 function MdToAnki() {
-    const path = arguments.path;
-    this.path = path || process.cwd(); //文件的绝对路径
+    const localPath = arguments.path;
+    this.path = localPath || process.cwd(); //文件的绝对路径
     this.fileList = []; //当前文件夹内的文件列表
     this.fileContentList = [];
 
@@ -65,6 +68,8 @@ function MdToAnki() {
         let line
         if(fileStr.startsWith('\\r\\n')){
             line = '\r\n'
+        }else if(fileStr.startsWith('\\n')){
+            line = '\n'
         }else {
             line = '\r\n\r\n'
         }
@@ -84,9 +89,14 @@ function MdToAnki() {
 
             if (currentLine.startsWith("s;")) {
                 fileCard.push({
-                    step: [getNewLine(currentLine.split("s;")[1])],
-                    id: shortid.generate()
+                    step: [getNewLine((tag?tag+'：':'默认：')+(prefix?prefix:'')+ currentLine.split("s;")[1])],
+                    // step: [getNewLine((tag?tag+'：':'默认：')),getNewLine(prefix?prefix:''), getNewLine(currentLine.split("s;")[1])],
+                    id: shortid.generate(),
+                    // id:currentLine.split("s;")[1],
+                    tag,
+                    prefix,
                 });
+                
                 if (!this.parentList["parent" + line.length]) {
                     this.parentList["parent" + line.length] = [];
                 }
@@ -99,7 +109,6 @@ function MdToAnki() {
                         "parent" + (line.length - 1)
                     ].slice(-1)[0].id;
                 }
-
                 inputLocation = fileCard.slice(-1)[0].step;
             } else if (currentLine.startsWith("d;")) {
                 fileCard.slice(-1)[0].detail = [
@@ -112,8 +121,11 @@ function MdToAnki() {
                 user = currentLine.split("u;")[1];
             } else if (currentLine.startsWith("t;")) {
                 tag = currentLine.split("t;")[1];
-                fileCard.slice(-1)[0].tag = tag;
-            } else if (currentLine.startsWith("TI:")) {
+                fileCard.slice(-1)[0] && (fileCard.slice(-1)[0].tag = tag);
+            } else if(currentLine.startsWith('p;')) {
+                prefix = currentLine.split("p;")[1];
+                fileCard.slice(-1)[0] && (fileCard.slice(-1)[0].prefix = prefix);
+            }else if (currentLine.startsWith("TI:")) {
                 //TODO: 视频处理
 
                 //还没有写
@@ -153,7 +165,9 @@ function MdToAnki() {
                 content = getAnkiImageSrc(currentLine);
                 const imagName = getImageName(currentLine);
                 //获得图片路径
-                const imageDir = cwd + `/md/${currentLine.split("/")[1]}/`;
+                // const imageDir = cwd + `/md/${currentLine.split("/")[1]}/`;
+
+                const imageDir = path.dirname(currentLine.split('(')[1].substring(0,currentLine.split('(')[1].length-1))
                 copyImage(imagName, imageDir, user, currentPath);
                 inputLocation && inputLocation.push(getNewLine(content));
             } else {
@@ -165,28 +179,45 @@ function MdToAnki() {
     this.cards = [];
     this.fileCards.forEach(fileCard => {
         this.cards.push([]);
+        // console.log('============')
+        // console.log(fileCard)
         fileCard.forEach(item => {
             const card = {};
-
             // card.front = item.step.join("\r\n");
+            // if(item.parent){
+            //     card.fronts = [item.step.slice(2).join('')];
+            // }else {
+            //     card.fronts = [item.step.join("")];
+            // }
 
-            card.fronts = [item.step.join("\r\n")];
+            card.fronts = [item.step.join("")];
+            
+            // console.log(item)
             function getParentStep(item) {
                 if (item.parent) {
+                    // console.log('==========')
+                    // console.log(fileCard)
                     const parent = fileCard.find(
-                        item2 => item2.id === item.parent
+                        item2 => {
+                            // console.log(item2)
+                            return item2.id === item.parent
+                        }
                     );
-                    card.fronts.push(parent.step.join("\r\n"));
-                    if (parent.parent) {
-                        getParentStep(parent);
-                    }
+                    // console.log('=======')
+                    // console.log(item)
+                    // console.log(parent)
+                    card.fronts.push(parent.step.join(""));
+                    return 
+                    // if (parent.parent) {
+                    //     getParentStep(parent);
+                    // }
                 }
             }
 
             getParentStep(item);
 
             card.front = card.fronts.reverse().join("");
-
+            
             card.back =
                 item.detail.join("") +
                 fileCard
@@ -195,9 +226,10 @@ function MdToAnki() {
                         return item3.step.join("");
                     })
                     .join("");
+            
             if (item.parent) {
                 card.tag = fileCard.find(oneFileCard => {
-                    return (oneFileCard.id = item.parent);
+                    return (oneFileCard.id === item.parent);
                 }).tag;
             } else {
                 card.tag = item.tag;
@@ -207,8 +239,16 @@ function MdToAnki() {
         });
     });
 
+
+    //如果已经有alltxtforanki，那就先删除
+    mkdirsSync("./txtforanki/");
+    const alltxtforankiPath = './txtforanki/alltxtforanki.txt'
+    if(fs.existsSync(alltxtforankiPath)){
+        fs.unlinkSync(alltxtforankiPath)
+    }
+
     this.cards.forEach((file, fileIndex) => {
-        mkdirsSync("./txtforanki/");
+        
         const content = file.map(card => {
             if (!card.front && !card.back) return "";
             return (

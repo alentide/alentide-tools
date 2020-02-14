@@ -9,7 +9,6 @@ function splitVideo ({inputPath,outPath,start,duration,bitrate=10},cb){
         console.log('分割视频缺少必要参数')
         return
     }
-    // console.log(inputPath,outPath,start,duration)
     ffmpeg(inputPath)
     .setStartTime(start)
     .setDuration(duration)
@@ -18,6 +17,8 @@ function splitVideo ({inputPath,outPath,start,duration,bitrate=10},cb){
     .on("end", function(err, file) {
         if (!err) {
             console.log("conversion Done");
+        }else {
+            console.log(err)
         }
         cb && cb(null,true)
         
