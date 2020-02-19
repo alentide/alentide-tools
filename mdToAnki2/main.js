@@ -167,7 +167,10 @@ function MdToAnki() {
                 //获得图片路径
                 // const imageDir = cwd + `/md/${currentLine.split("/")[1]}/`;
 
-                const imageDir = path.dirname(currentLine.split('(')[1].substring(0,currentLine.split('(')[1].length-1))
+                // const imageDir = path.dirname(currentLine.split('(')[1].substring(0,currentLine.split('(')[1].length-1))
+                
+
+                const imageDir = path.dirname(currentLine.match(/\](\S+)/)[0].slice(2,-1))
                 copyImage(imagName, imageDir, user, currentPath);
                 inputLocation && inputLocation.push(getNewLine(content));
             } else {
