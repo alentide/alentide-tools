@@ -10,11 +10,11 @@ function watchFile(filePath, cb) {
     var watch = require("node-watch");
 
     watch(filePath, { recursive: true }, function(evt, name) {
-        console.log("%s changed.", name);
+        // console.log("%s changed.", name);
         //如果已经记录该文件不可操作就直接返回
         if(canNotOperate.find(item=>item===name)) return
         fs.access(name, fs.R_OK | fs.W_OK, function(err) {
-            console.log(name + (err ? "不可操作!" : "可以读/写"));
+            // console.log(name + (err ? "不可操作!" : "可以读/写"));
             if (err) {
                 canNotOperate.push(name)
                 return

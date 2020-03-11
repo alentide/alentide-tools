@@ -83,7 +83,7 @@ let options = [
     }
 ];
 
-async function mdToAnki(filePath, armDB) {
+async function mdToAnki(filePath, armDB,cb) {
     const meta = {
         user: "fractium",
         tag: "",
@@ -191,14 +191,19 @@ async function mdToAnki(filePath, armDB) {
     const http = require("./http/main");
 
     // console.log(notes)
-    console.log(
-        "===============================",
-        notes,
-        "--------------------",
-        "armDB[0]"
-    );
-    if (notes.length === 0) return; //如果没有添加过，则添加到数据库和anki;
-    (async function recursiveFind(i) {
+    // console.log(
+    //     "===============================",
+    //     notes,
+    //     "--------------------",
+    //     "armDB[0]"
+    // );
+    console.log("mdtoanki会被频繁触发吗");
+    if (notes.length === 0) {
+        cb && cb()
+        return
+    }; //如果没有添加过，则添加到数据库和anki;
+    
+    ;(async function recursiveFind(i) {
         if (i === notes.length) {
             notes.forEach(note => {
                 note.fields.正面 = note.originFields.front + note.randomCode;
@@ -256,7 +261,10 @@ async function mdToAnki(filePath, armDB) {
             return;
         }
         const note = notes[i];
-        if (!note) return;
+        if (!note) {
+            cb && cb()
+            return
+        };
         db.findOne(
             { filePath: note.filePath, index: note.index },
             async function(err, doc) {
@@ -276,12 +284,15 @@ async function mdToAnki(filePath, armDB) {
                     const thisDocInArmDBHasIndex = armDB.findIndex(armNote => {
                         return armNote.id === doc.id;
                     });
-                    console.log(thisDocInArmDBHasIndex);
+                    // console.log(thisDocInArmDBHasIndex);
                     if (thisDocInArmDBHasIndex > -1) {
                         armDB.splice(thisDocInArmDBHasIndex, 1, note);
                     } else {
                         armDB.push(note);
                     }
+
+                    //允许下个一mdtoanki执行
+                    cb && cb()
 
                     note.needInput = false;
                 } else {
