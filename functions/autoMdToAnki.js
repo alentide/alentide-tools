@@ -5,10 +5,10 @@ const mdToAnki = require("./mdToAnki/main");
 
 function main() {
     const watchPath = process.cwd();
-    watchFile(process.cwd(), fileName => {
+    watchFile(process.cwd(), (fileName,armDB) => {
         if (!fileName.endsWith(".md")) return;
-        console.log(fileName)
-        mdToAnki(fileName);
+        // console.log(fileName)
+        mdToAnki(fileName,armDB);
     });
 }
 

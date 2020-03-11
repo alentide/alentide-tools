@@ -26,13 +26,13 @@ let options = [
         handler: getUser
     },
     {
-        basis: '牌组类：',
+        basis: "牌组类：",
         handler({ meta, currentLine, basis }) {
             meta.deckName = currentLine.split(basis)[1];
         }
     },
     {
-        basis: '笔记类：',
+        basis: "笔记类：",
         handler({ meta, currentLine, basis }) {
             meta.modelName = currentLine.split(basis)[1];
         }
@@ -40,15 +40,14 @@ let options = [
     {
         basis: "序号：",
         handler({ meta, currentLine, basis }) {
-            const content = currentLine.split(basis)[1]
-            if(content.startsWith('d')){
-                meta.index = content.split('d')[1]
-                meta.deleted = true
-            }else {
-                meta.deleted = false
+            const content = currentLine.split(basis)[1];
+            if (content.startsWith("d")) {
+                meta.index = content.split("d")[1];
+                meta.deleted = true;
+            } else {
+                meta.deleted = false;
                 meta.index = currentLine.split(basis)[1];
             }
-            
         }
     },
     {
@@ -84,7 +83,7 @@ let options = [
     }
 ];
 
-async function mdToAnki(filePath) {
+async function mdToAnki(filePath, armDB) {
     const meta = {
         user: "fractium",
         tag: "",
@@ -93,8 +92,8 @@ async function mdToAnki(filePath) {
         className: "",
         inputLocation: [],
         filePath,
-        deckName: '',
-        modelName: '',
+        deckName: "",
+        modelName: "",
         deleted: false,
 
         get currentPath() {
@@ -148,41 +147,67 @@ async function mdToAnki(filePath) {
 
     // cardDB.findOne()
 
-    const notes = cardList.map(card => {
-        return {
-            deckName: card.deckName,
-            modelName: card.modelName,
-            fields: {
-                正面: card.front,
-                背面: card.back
-            },
-            originFields: {
-                front: card.front,
-                back: card.back
-            },
-            randomCode: "",
-            tags: card.tag.split(" "),
-            filePath: card.filePath,
-            index: card.index,
-            deleted: card.deleted
-        };
-    }).filter(card=>card.deleted === false && card.deckName && card.modelName);//anki的删除还是手动删除比较好，这里仅跳过对本地删除的卡片
+    //内存数据库
+    // const armDB = [];
+
+    const notes = cardList
+        .map(card => {
+            return {
+                deckName: card.deckName,
+                modelName: card.modelName,
+                fields: {
+                    正面: card.front,
+                    背面: card.back
+                },
+                originFields: {
+                    front: card.front,
+                    back: card.back
+                },
+                randomCode: "",
+                tags: card.tag.split(" "),
+                filePath: card.filePath,
+                index: card.index,
+                deleted: card.deleted
+            };
+        })
+        .filter(
+            //anki的删除还是手动删除比较好，这里仅跳过对本地删除的卡片
+            card => card.deleted === false && card.deckName && card.modelName
+        )
+        .filter(note => {
+            const equalNote = armDB.find(armNote => {
+                // console.log(note.originFields.front===armNote.originFields.front,note.originFields.back === armNote.originFields.back)
+                if (
+                    note.originFields.front === armNote.originFields.front &&
+                    note.originFields.back === armNote.originFields.back
+                ) {
+                    return true;
+                }
+                return false;
+            });
+            return !equalNote;
+        });
+
     const http = require("./http/main");
 
-    //判断是否以添加到anki过
-
-    //如果没有添加过，则添加到数据库和anki
+    // console.log(notes)
+    console.log(
+        "===============================",
+        notes,
+        "--------------------",
+        "armDB[0]"
+    );
+    if (notes.length === 0) return; //如果没有添加过，则添加到数据库和anki;
     (async function recursiveFind(i) {
         if (i === notes.length) {
             notes.forEach(note => {
-                note.fields.正面 =
-                    note.originFields.front+note.randomCode;
+                note.fields.正面 = note.originFields.front + note.randomCode;
             });
             const needInputNotes = notes.filter(
                 note => note.needInput === true
             );
             if (needInputNotes.length > 0) {
-                const {data} = await http.post("/", {
+                const { data } = await http.post("/", {
                     action: "addNotes",
                     version: 6,
                     params: {
@@ -197,7 +222,12 @@ async function mdToAnki(filePath) {
                     // );
                     note.id = notesIdList[i];
                 });
-                db.insert(needInputNotes);
+                db.insert(
+                    needInputNotes.filter(note => {
+                        //如果没有拿到id，说明加入anki失败，那么也不应该添加到本地
+                        return note.id;
+                    })
+                );
             }
 
             // 更新
@@ -226,10 +256,12 @@ async function mdToAnki(filePath) {
             return;
         }
         const note = notes[i];
+        if (!note) return;
         db.findOne(
             { filePath: note.filePath, index: note.index },
             async function(err, doc) {
-                note.randomCode = `<div style="display:none" >${Math.random()+Date.now()}</div>`;
+                note.randomCode = `<div style="display:none" >${Math.random() +
+                    Date.now()}</div>`;
                 if (doc) {
                     if (
                         note.originFields.front !== doc.originFields.front ||
@@ -240,6 +272,17 @@ async function mdToAnki(filePath) {
                     } else {
                         note.needUpdate = false;
                     }
+                    //在内存里保存引入的数据
+                    const thisDocInArmDBHasIndex = armDB.findIndex(armNote => {
+                        return armNote.id === doc.id;
+                    });
+                    console.log(thisDocInArmDBHasIndex);
+                    if (thisDocInArmDBHasIndex > -1) {
+                        armDB.splice(thisDocInArmDBHasIndex, 1, note);
+                    } else {
+                        armDB.push(note);
+                    }
+
                     note.needInput = false;
                 } else {
                     note.needInput = true;
@@ -252,7 +295,6 @@ async function mdToAnki(filePath) {
         );
     })(0);
 
- 
     //保留下来note的id,
 }
 // mdToAnki("D:/Notes/2020年/2020年03月10日-2020年03月15日.md");

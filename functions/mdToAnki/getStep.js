@@ -30,7 +30,7 @@ function getStep({
     // if(meta.index == null)
     const card = {
         index: meta.index,
-        step: [getNewline(meta.tag + prefix + currentLine.split(basis)[1])],
+        step: [getNewline(meta.tag+'：' + prefix + currentLine.split(basis)[1])],
         id: shortid.generate(),
         tag: meta.tag,
         deckName: meta.deckName,
