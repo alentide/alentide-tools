@@ -1,8 +1,14 @@
 // const inputStr = 'TI: 9.03 -  10.01 '
 // const inputStr = 'TI: 9.03 -  10 '
 
-function getVideoParams(input) {
-    const paramsArr = input.split("TI:")[1].split("-");
+function getVideoParams(input,mk2) {
+    let paramsArr
+    if(mk2){
+        paramsArr = input.split('-')
+    }else {
+        paramsArr = input.split("TI:")[1].split("-");
+    }
+    
     paramsArr[0] = paramsArr[0].trim();
     paramsArr[1] = paramsArr[1].trim();
     let StartTimeStrArr = [];

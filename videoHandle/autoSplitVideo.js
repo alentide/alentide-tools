@@ -2,7 +2,7 @@ const ffmpeg = require("fluent-ffmpeg");
 const fs = require('fs')
 const path = require('path')
 
-function autoSplitVideo(filename = "./1.mp4",core=2,defaultDuration=4,user="test") {
+function autoSplitVideo(filename = "./1.mp4",core=2,defaultDuration=4,user="test",bitrate=10) {
     ffmpeg.ffprobe(filename, function(err, data) {
         const duration = Math.ceil(data.format.duration);
         //希望得到0-4,2-6,4-8,6-10之类的。
@@ -38,7 +38,7 @@ function autoSplitVideo(filename = "./1.mp4",core=2,defaultDuration=4,user="test
         });
         console.log(videoSplitParams);
         
-        fs.writeFileSync(path.basename(filename).split('.')[0]+'.md',`V:${filename}\r\n\r\nP:\r\n\r\nU:${user}\r\n\r\nCL:mask\r\n\r\n\r\n`+result.join(''))
+        fs.writeFileSync(path.basename(filename).split('.')[0]+'.md',`V:${filename}\r\n\r\nB:${bitrate}\r\n\r\nU:${user}\r\n\r\nCL:mask\r\n\r\n\r\n`+result.join(''))
     });
 }
 module.exports = autoSplitVideo;

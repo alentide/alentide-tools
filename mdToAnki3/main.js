@@ -1,19 +1,3 @@
-/**
- * 一个问题可能包含多个步骤，
- * 而一个步骤也可能包含很多步骤，这个问题没有考虑到
- * 现在mdToAnki2将解决这个问题
- *
- *
- * 1.首先：mdToAnki2简称mta ,不在设置问题和答案，而是设置做法的概括和详情
- * 比如：
- * 问题： 如何做到a？
- * 答：1.先做到a-1
- *      先做b-1
- *      再做b-2
- *
- * step:
- *
- */
 
 const fs = require("fs");
 const path = require("path");
@@ -92,12 +76,12 @@ function MdToAnki() {
         fileLineSplitByTab.forEach(line => {
             const currentLine = line.slice(-1)[0];
 
-            if (currentLine.startsWith("s;")) {
+            if (currentLine.startsWith("问：")) {
                 fileCard.push({
-                    step: [getNewLine((tag?tag+'：':'默认：')+(prefix?prefix:'')+ currentLine.split("s;")[1])],
-                    // step: [getNewLine((tag?tag+'：':'默认：')),getNewLine(prefix?prefix:''), getNewLine(currentLine.split("s;")[1])],
+                    step: [getNewLine((tag?tag+'：':'默认：')+(prefix?prefix:'')+ currentLine.split("问：")[1])],
+                    // step: [getNewLine((tag?tag+'：':'默认：')),getNewLine(prefix?prefix:''), getNewLine(currentLine.split("问：")[1])],
                     id: shortid.generate(),
-                    // id:currentLine.split("s;")[1],
+                    // id:currentLine.split("问：")[1],
                     tag,
                     prefix,
                 });
@@ -115,33 +99,33 @@ function MdToAnki() {
                     ].slice(-1)[0].id;
                 }
                 inputLocation = fileCard.slice(-1)[0].step;
-            } else if (currentLine.startsWith("d;")) {
+            } else if (currentLine.startsWith("答：")) {
                 fileCard.slice(-1)[0].detail = [
-                    getNewLine(currentLine.split("d;")[1])
+                    getNewLine(currentLine.split("答：")[1])
                 ];
                 inputLocation = fileCard.slice(-1)[0].detail;
-            } else if (currentLine.startsWith("n;")) {
+            } else if (currentLine.startsWith("注释：")) {
                 inputLocation = null;
-            } else if (currentLine.startsWith("u;")) {
-                user = currentLine.split("u;")[1];
-            } else if (currentLine.startsWith("t;")) {
-                tag = currentLine.split("t;")[1];
+            } else if (currentLine.startsWith("用户名：")) {
+                user = currentLine.split("用户名：")[1];
+            } else if (currentLine.startsWith("标签：")) {
+                tag = currentLine.split("标签：")[1];
                 fileCard.slice(-1)[0] && (fileCard.slice(-1)[0].tag = tag);
-            } else if(currentLine.startsWith('p;')) {
-                prefix = currentLine.split("p;")[1];
+            } else if(currentLine.startsWith('前缀：')) {
+                prefix = currentLine.split("前缀：")[1];
                 fileCard.slice(-1)[0] && (fileCard.slice(-1)[0].prefix = prefix);
-            }else if(currentLine.startsWith('bit;')){
-                bitrate = currentLine.split("bit;")[1];
-            }else if(currentLine.startsWith('className;')){
-                className = currentLine.split("className;")[1];
-            }else if (currentLine.startsWith("vp;")) {
+            }else if(currentLine.startsWith('比特率：')){
+                bitrate = currentLine.split("比特率：")[1];
+            }else if(currentLine.startsWith('样式类：')){
+                className = currentLine.split("样式类：")[1];
+            }else if (currentLine.startsWith("视频地址：")) {
                 //TODO: 视频处理
-                videoPath = currentLine.split("vp;")[1];
+                videoPath = currentLine.split("视频地址：")[1];
                 //set video path
                 this.videoPaths.push(videoPath)
-            }else if(currentLine.startsWith("v;")){
+            }else if(currentLine.startsWith("视频参数：")){
                 let { html, mdVideoPath, splitVideo } = videoHandle(
-                    currentLine.split("v;")[1],
+                    currentLine.split("视频参数：")[1],
                     this.videoPaths.slice(-1)[0],
                     1,//chunkId 暂时不使用
                     prefix,

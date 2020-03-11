@@ -20,7 +20,7 @@ function main() {
             await arr[i]();
         }
     }
-    const parallel = 2;
+    const parallel = 1;
 
     const videoHandle = require("./videoHandle/main");
 
@@ -407,6 +407,7 @@ function main() {
                 }
                 // console.log(i,arrayData.length-1)
                 //如果所有的文件处理都已经完成，则进行拆分视频
+
                 if (asyncDone.every(item => item)) {
                     let chunk
                     if(asyncQueue.length<parallel){
@@ -417,11 +418,13 @@ function main() {
                             asyncQueue,
                             asyncQueue.length / parallel
                         );
+                        
                     }
-                    if (asyncQueue.length>=parallel && asyncQueue.length % parallel >= 0) {
+                    if (chunk.length>parallel) {
                         const deletedArr = chunk.splice(-1, 1);
                         chunk[0].push(...deletedArr[0]);
                     }
+                    
                     chunk.forEach(item => {
                         chunkAsyncFunc(item);
                     });

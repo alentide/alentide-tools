@@ -8,5 +8,6 @@ server/
 mdToAnki2/md/
 mdToAnki2/oneMd/
 mdToAnki2/test/
+*.db
 
 mdToAnki/*.md

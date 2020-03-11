@@ -36,9 +36,12 @@ function videoHandle(
     prefix = "",
     user = "test",
     bitrate,
-    className
+    className,
+    mk2,
 ) {
-    const { duration, start } = getVideoParams(mdTI);
+
+    const  { duration, start } = getVideoParams(mdTI,mk2);
+    
     const splitVideoParams = {
         inputPath,
         duration,
@@ -58,7 +61,7 @@ function videoHandle(
     const index = basename.lastIndexOf(".");
     const basenameNoExt = basename.slice(0, index);
     // const chunk = chunkPath.split('/').slice(-4).join('/')
-    const mdVideoPath = `${prefix}${basenameNoExt}_${start
+    const mdVideoPath = `${prefix}${basenameNoExt}_BIT${bitrate}_${start
         .split(":")
         .join("-")}_${duration}.webm`;
 

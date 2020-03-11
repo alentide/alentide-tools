@@ -6,7 +6,7 @@ module.exports = function getImageName(image) {
     // let imageName = image
     //     .split("(")[1]
     //     .substring(0, image.split("(")[1].length - 1);
-    let imageName = path.basename(image.match(/\](\S+)/)[0].slice(2,-1));
+    let imageName = path.basename(image.match(/\](.+)/)[0].slice(2,-1));
     // console.log(path.basename(imageName))
     return imageName;
 };

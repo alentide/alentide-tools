@@ -18,6 +18,7 @@ const io = new IO();
 const cwd = process.cwd();
 const backslashIndex = cwd.lastIndexOf("\\");
 const dirname = cwd.slice(backslashIndex + 1);
+const fs = require('fs')
 
 function start() {
     const params = process.argv.slice(2);
@@ -61,9 +62,35 @@ function start() {
             paramsObj.asv.split("/")[3]
         );
     }
+    if(paramsObj.automdtoanki){
+        require('./functions/autoMdToAnki')()
+    }
+    if (paramsObj.asvd) {
+        const fileList = fs.readdirSync('./')
+        
+        fileList.forEach(file=>{
+
+            if(['mkv','mp4','avi','mp3','rmvb'].includes(file.split('.').slice(-1)[0])){
+                console.log(file)
+                autoSplitVideo(
+                    file,//文件路径
+                    paramsObj.asvd.split("/")[0],//核心部分，按照此长度划分
+                    paramsObj.asvd.split("/")[1],//时长
+                    paramsObj.asvd.split("/")[2],//user
+                    paramsObj.asvd.split("/")[3],//bitrate
+                );
+            }
+        })
+    }
     //mdtoanki2
     if (paramsObj.mta) {
         const MdToAnki = require("./mdToAnki2/main");
+        new MdToAnki();
+    }
+
+    //mdtoanki3
+    if (paramsObj.ma) {
+        const MdToAnki = require("./mdToAnki3/main");
         new MdToAnki();
     }
     // paramsObj.open && win10.useDos("start C:/alxsd/utils")
@@ -83,6 +110,19 @@ function start() {
             videotomd({mdPath})
         }else {
             videotomd()
+        }
+        
+    }else if(paramsObj.mdm){
+        const today = new Date()
+        const y = today.getFullYear() +''
+        const m = today.getMonth()+1 +''
+        const d = today.getDate()+''
+        const todayDirName = `${y.padStart(2,0)}年${m.padStart(2,0)}月${d.padStart(2,0)}日-每日笔记`
+        fs.mkdirSync('./'+todayDirName)
+        for(let i =0;i<24;i++){
+            fs.writeFile('./'+todayDirName+'/'+i+'时.md','',function(err){
+                err && console.log(err)
+            })
         }
         
     }
