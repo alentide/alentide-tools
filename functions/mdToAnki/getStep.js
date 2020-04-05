@@ -4,10 +4,10 @@ const shortid = require("shortid");
 function getStep({
     originLine: line,
     meta,
-    prefix = "",
     basis = "问：",
     parentList,
-    cardList
+    cardList,
+    currentLine
 }) {
     //如果索引不存在，则该卡片不被录入
     if (!meta.index) {
@@ -26,16 +26,16 @@ function getStep({
     if (!meta.tag) {
         meta.tag = "默认";
     }
-    const currentLine = line.slice(-1)[0];
+    // const currentLine = line.slice(-1)[0];
     // if(meta.index == null)
     const card = {
         index: meta.index,
-        step: [getNewline(meta.tag+'：' + prefix + currentLine.split(basis)[1])],
+        step: [getNewline(meta.tag+'：' + meta.prefix + currentLine.split(basis)[1])],
         id: shortid.generate(),
         tag: meta.tag,
         deckName: meta.deckName,
         modelName: meta.modelName,
-        prefix,
+        prefix: meta.prefix,
         deleted: meta.deleted
     };
     cardList.push(card);

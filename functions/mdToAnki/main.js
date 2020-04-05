@@ -83,7 +83,7 @@ let options = [
     }
 ];
 
-async function mdToAnki(filePath, armDB,cb) {
+async function mdToAnki(filePath, armDB, cb) {
     const meta = {
         user: "fractium",
         tag: "",
@@ -95,6 +95,7 @@ async function mdToAnki(filePath, armDB,cb) {
         deckName: "",
         modelName: "",
         deleted: false,
+        intendation: '====',
 
         get currentPath() {
             return (
@@ -112,11 +113,19 @@ async function mdToAnki(filePath, armDB,cb) {
     const fileContentArr = getFileContentArr(filePath);
 
     //去除每行开头的tab缩进
-    const fileLineSplitByTab = fileContentArr.map(line => line.split("\t"));
+    const fileLineSplitByIntendation = fileContentArr.map(line => line.split(meta.intendation));
 
-    fileLineSplitByTab.forEach(originLine => {
+    fileLineSplitByIntendation.forEach(originLine => {
+        // console.log(originLine)
         //取出非空部分
-        const currentLine = originLine.slice(-1)[0];
+        // let currentLine
+        // if(originLine.length===1){
+        //     currentLine = originLine.join(meta.intendation);
+        // }else {
+        //     currentLine = originLine.slice(1).join(meta.intendation);
+        // }
+        currentLine = originLine.slice(-1)[0];
+        
         options.some((option, i, keysList) => {
             if (currentLine.startsWith(option.basis)) {
                 option.handler({
@@ -142,7 +151,7 @@ async function mdToAnki(filePath, armDB,cb) {
 
     //发送请求
     let notesIdList;
-    const db = require("./db/db");
+    
     // const cardDB = require('./db/card')
 
     // cardDB.findOne()
@@ -150,26 +159,64 @@ async function mdToAnki(filePath, armDB,cb) {
     //内存数据库
     // const armDB = [];
 
-    const notes = cardList
-        .map(card => {
-            return {
-                deckName: card.deckName,
-                modelName: card.modelName,
-                fields: {
-                    正面: card.front,
-                    背面: card.back
-                },
-                originFields: {
-                    front: card.front,
-                    back: card.back
-                },
-                randomCode: "",
-                tags: card.tag.split(" "),
-                filePath: card.filePath,
-                index: card.index,
-                deleted: card.deleted
-            };
+    const originNotes = cardList.map(card => {
+        return {
+            deckName: card.deckName,
+            modelName: card.modelName,
+            fields: {
+                正面: card.front,
+                背面: card.back
+            },
+            originFields: {
+                front: card.front,
+                back: card.back
+            },
+            randomCode: "",
+            tags: card.tag.split(" "),
+            filePath: card.filePath,
+            index: card.index,
+            deleted: card.deleted
+        };
+    });
+
+
+    //测试用的db数据库和正常用的分开
+    let db
+    if(meta.deckName === 'test'&& meta.modelName === 'test'){
+        db = require('./db/testdb')
+    }else {
+        db = require("./db/db");
+    }
+    //得到被判定为删除的卡片
+    const deletedNotes = originNotes.filter(note=>{
+        return note.deleted === true
+    })
+    //从db中获得删除卡片id
+    deletedNotes.forEach(note=>{
+        db.findOne({filePath:note.filePath,index:note.index},async function(err,doc){
+            if(doc){
+                //发送请求，使anki删除对应卡片，并删除db里面的那份,还有armDB那份
+                const result = await http.post("/", {
+                    action: "deleteNotes",
+                    version: 6,
+                    params: {
+                        notes: [doc.id]
+                    }
+                });
+                armDB.splice(armDB.findIndex(armDBNote=>{
+                    return armDBNote.id ===doc.id
+                }),1)
+
+                db.remove({id:doc.id},{},function(err,numRemove){
+                    console.log(`本地仓库db移除了${numRemove}条数据`)
+                })
+            }
         })
+    })
+    
+
+
+    const notes = originNotes
         .filter(
             //anki的删除还是手动删除比较好，这里仅跳过对本地删除的卡片
             card => card.deleted === false && card.deckName && card.modelName
@@ -197,13 +244,14 @@ async function mdToAnki(filePath, armDB,cb) {
     //     "--------------------",
     //     "armDB[0]"
     // );
-    console.log("mdtoanki会被频繁触发吗");
+    // console.log("mdtoanki会被频繁触发吗");
     if (notes.length === 0) {
-        cb && cb()
-        return
-    }; //如果没有添加过，则添加到数据库和anki;
-    
-    ;(async function recursiveFind(i) {
+        // console.log(armDB);
+        cb && cb();
+        return;
+    } //如果没有添加过，则添加到数据库和anki;
+
+    (async function recursiveFind(i) {
         if (i === notes.length) {
             notes.forEach(note => {
                 note.fields.正面 = note.originFields.front + note.randomCode;
@@ -262,9 +310,9 @@ async function mdToAnki(filePath, armDB,cb) {
         }
         const note = notes[i];
         if (!note) {
-            cb && cb()
-            return
-        };
+            cb && cb();
+            return;
+        }
         db.findOne(
             { filePath: note.filePath, index: note.index },
             async function(err, doc) {
@@ -282,7 +330,11 @@ async function mdToAnki(filePath, armDB,cb) {
                     }
                     //在内存里保存引入的数据
                     const thisDocInArmDBHasIndex = armDB.findIndex(armNote => {
-                        return armNote.id === doc.id;
+                        return (
+                            armNote.originFields.front ===
+                                doc.originFields.front &&
+                            armNote.originFields.back === doc.originFields.back
+                        );
                     });
                     // console.log(thisDocInArmDBHasIndex);
                     if (thisDocInArmDBHasIndex > -1) {
@@ -292,7 +344,7 @@ async function mdToAnki(filePath, armDB,cb) {
                     }
 
                     //允许下个一mdtoanki执行
-                    cb && cb()
+                    cb && cb();
 
                     note.needInput = false;
                 } else {

@@ -1,0 +1,163 @@
+[
+    {
+        "fileName": "css",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "CSS",
+        "use": true
+    },
+    {
+        "fileName": "git",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Git",
+        "use": true
+    },
+    {
+        "fileName": "想法",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "想法",
+        "use": true
+    },
+    {
+        "fileName": "JavaScript",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "JavaScript",
+        "use": true
+    },
+    {
+        "fileName": "node",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "node",
+        "use": true
+    },
+    {
+        "fileName": "scss",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "scss",
+        "use": true
+    },
+    {
+        "fileName": "test",
+        "noteType": "test",
+        "cardType": "test",
+        "tag": "test",
+        "use": true
+    },
+    {
+        "fileName": "WebAPI",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "WebAPI",
+        "use": true
+    },
+    {
+        "fileName": "项目开发",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "项目开发",
+        "use": true
+    },
+    {
+        "fileName": "Vue",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Vue",
+        "use": true
+    },
+    {
+        "fileName": "React",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "React",
+        "use": true
+    },
+    {
+        "fileName": "Jest",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Jest",
+        "use": true
+    },
+    {
+        "fileName": "前端",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "前端",
+        "use": true
+    },
+    {
+        "fileName": "jQuery",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "jQuery",
+        "use": true
+    },
+    {
+        "fileName": "Webpack",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Webpack",
+        "use": true
+    },
+    {
+        "fileName": "MongoDB",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "MongoDB",
+        "use": true
+    },
+    {
+        "fileName": "Mongoose",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Mongoose",
+        "use": true
+    },
+    {
+        "fileName": "Nuxt",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Nuxt",
+        "use": true
+    },
+    {
+        "fileName": "PHP",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "PHP",
+        "use": true
+    },
+    {
+        "fileName": "C++",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "C++",
+        "use": true
+    },
+    {
+        "fileName": "C语言",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "C语言",
+        "use": true
+    },
+    {
+        "fileName": "Java",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "Java",
+        "use": true
+    },
+    {
+        "fileName": "神经语言程序学",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "神经语言程序学",
+        "use": true
+    }
+]

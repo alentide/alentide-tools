@@ -10,7 +10,7 @@ function videotomd() {
     // })
 
     files.forEach(file => {
-        if (!["mp4", "avi", "rmvb", "mkv"].includes(file.split(".").slice(-1)[0]))
+        if (!["mp4", "avi", "rmvb", "mkv", "wmv"].includes(file.split(".").slice(-1)[0]))
             return;
         const newFileName = `./v-${file}.md`
         try {

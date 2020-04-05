@@ -125,6 +125,8 @@ function start() {
             })
         }
         
+    }else if(paramsObj.todaynotes){
+        require('./functions/mdToAnki/todayNotes')()
     }
 }
 
