@@ -86,7 +86,7 @@ let options = [
 async function mdToAnki(filePath, armDB, cb) {
     const meta = {
         user: "fractium",
-        tag: "",
+        tag: '',
         prefix: "",
         bitrate: 10,
         className: "",
