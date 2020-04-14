@@ -1,7 +1,9 @@
 const path = require("path");
-module.exports = function getImageName(image) {
-
+ function getImageName(originImage) {
+    const image = originImage.trim()
     let imageName = path.basename(image.match(/\](.+)/)[0].slice(2,-1));
-
     return imageName;
 };
+
+
+module.exports =getImageName

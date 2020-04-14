@@ -10,7 +10,6 @@ function getImage({currentLine,meta}){
     const imagName = getImageName(currentLine);
     let content = getAnkiImageContent(imagName);
 
-
     let imageDir = [path.dirname(currentLine.match(/\](.+)/)[0].slice(2,-1))]
     if(!path.isAbsolute(imageDir[0])){
         imageDir.unshift(path.dirname(meta.filePath))

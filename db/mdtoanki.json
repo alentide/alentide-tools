@@ -159,5 +159,26 @@
         "cardType": "0EveryDay",
         "tag": "神经语言程序学",
         "use": true
+    },
+    {
+        "fileName": "英语词汇",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "英语词汇",
+        "use": true
+    },
+    {
+        "fileName": "正则",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "正则",
+        "use": true
+    },
+    {
+        "fileName": "npm",
+        "noteType": "OneCard",
+        "cardType": "0EveryDay",
+        "tag": "npm",
+        "use": true
     }
 ]

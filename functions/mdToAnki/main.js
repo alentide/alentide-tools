@@ -83,7 +83,7 @@ let options = [
     }
 ];
 
-async function mdToAnki(filePath, armDB, cb) {
+async function mdToAnki(filePath, armDB=[], cb) {
     const meta = {
         user: "fractium",
         tag: '',
@@ -124,7 +124,7 @@ async function mdToAnki(filePath, armDB, cb) {
         // }else {
         //     currentLine = originLine.slice(1).join(meta.intendation);
         // }
-        currentLine = originLine.slice(-1)[0];
+        currentLine = originLine.slice(-1)[0].trim();
         
         options.some((option, i, keysList) => {
             if (currentLine.startsWith(option.basis)) {
@@ -316,8 +316,9 @@ async function mdToAnki(filePath, armDB, cb) {
         db.findOne(
             { filePath: note.filePath, index: note.index },
             async function(err, doc) {
-                note.randomCode = `<div style="display:none" >${Math.random() +
-                    Date.now()}</div>`;
+                // note.randomCode = `<div style="display:none" >${Math.random() +
+                //     Date.now()}</div>`;
+                    note.randomCode =`<div style="display:none" >${note.index}`
                 if (doc) {
                     if (
                         note.originFields.front !== doc.originFields.front ||
