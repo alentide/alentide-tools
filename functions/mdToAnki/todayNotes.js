@@ -7,8 +7,14 @@ const todayNotes = function() {
         dir: "./" + moment().format("YYYY年MM月DD日"),
         fileTemplates: [],
         line: "\r\n\r\n",
-        templates({ fileName, noteType, cardType, tag, use }) {
+        templates({ fileName, noteType, cardType, tag, use,template }) {
             const line = this.line;
+            if(use && template){
+                
+                return template.map(({cardType,noteType,tag})=>{
+                    return `牌组类：${cardType}${line}笔记类：${noteType}${line}标签：${tag}${line}`
+                }).join(line)
+            }
             if (!use) return false;
             return `牌组类：${cardType}${line}笔记类：${noteType}${line}标签：${tag}${line}`;
         }
@@ -25,6 +31,7 @@ const todayNotes = function() {
         );
 
         meta.fileTemplates.forEach(fileMeta => {
+            if(!fileMeta.use) return
             const filePath = path.join(meta.dir, fileMeta.fileName) + ".md";
             fs.access(filePath, fs.constants.R_OK, err => {
                 if (!err) return;

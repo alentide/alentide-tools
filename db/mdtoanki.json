@@ -2,183 +2,217 @@
     {
         "fileName": "css",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "CSS",
-        "use": true
+        "use": false
     },
     {
         "fileName": "git",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Git",
-        "use": true
+        "use": false
     },
     {
         "fileName": "想法",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "想法",
-        "use": true
+        "use": false
     },
     {
         "fileName": "JavaScript",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "JavaScript",
-        "use": true
+        "use": false
     },
     {
         "fileName": "node",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "node",
-        "use": true
+        "use": false
     },
     {
         "fileName": "scss",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "scss",
-        "use": true
+        "use": false
     },
     {
         "fileName": "test",
         "noteType": "test",
         "cardType": "test",
         "tag": "test",
-        "use": true
+        "use": false
     },
     {
         "fileName": "WebAPI",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "WebAPI",
-        "use": true
+        "use": false
     },
     {
         "fileName": "项目开发",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "项目开发",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Vue",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Vue",
-        "use": true
+        "use": false
     },
     {
         "fileName": "React",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "React",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Jest",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Jest",
-        "use": true
+        "use": false
     },
     {
         "fileName": "前端",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "前端",
-        "use": true
+        "use": false
     },
     {
         "fileName": "jQuery",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "jQuery",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Webpack",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Webpack",
-        "use": true
+        "use": false
     },
     {
         "fileName": "MongoDB",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "MongoDB",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Mongoose",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Mongoose",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Nuxt",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Nuxt",
-        "use": true
+        "use": false
     },
     {
         "fileName": "PHP",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "PHP",
-        "use": true
+        "use": false
     },
     {
         "fileName": "C++",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "C++",
-        "use": true
+        "use": false
     },
     {
         "fileName": "C语言",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "C语言",
-        "use": true
+        "use": false
     },
     {
         "fileName": "Java",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "Java",
-        "use": true
+        "use": false
     },
     {
         "fileName": "神经语言程序学",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "神经语言程序学",
-        "use": true
+        "use": false
     },
     {
         "fileName": "英语词汇",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "英语词汇",
-        "use": true
+        "use": false
     },
     {
         "fileName": "正则",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "正则",
-        "use": true
+        "use": false
     },
     {
         "fileName": "npm",
         "noteType": "OneCard",
-        "cardType": "0EveryDay",
+        "cardType": "1一般",
         "tag": "npm",
+        "use": false
+    },
+    {
+        "fileName": "0重要",
+        "noteType": "normal",
+        "cardType": "0重要",
+        "tag": "重要",
+        "use": false
+    },
+    {
+        "fileName": "1一般",
+        "noteType": "normal",
+        "cardType": "1一般",
+        "tag": "一般",
+        "use": false
+    },
+    {
+        "fileName": "0模板",
+        "template": [
+            {
+                "fileName": "test",
+                "noteType": "test",
+                "cardType": "test",
+                "tag": "test",
+                "use": true
+            },
+            {
+                "fileName": "JavaScript",
+                "noteType": "OneCard",
+                "cardType": "1一般",
+                "tag": "JavaScript",
+                "use": true
+            }
+        ],
         "use": true
     }
 ]
