@@ -16,7 +16,7 @@
     "lxs": "./main.js"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "fluent-ffmpeg": "^2.1.2",
     "iconv-lite": "^0.5.0",
     "jest": "^25.1.0",
